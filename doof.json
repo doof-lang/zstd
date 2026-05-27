@@ -1,0 +1,22 @@
+{
+  "name": "std/zstd",
+  "version": "0.1.0",
+  "license": "ISC",
+  "build": {
+    "native": {
+      "includePaths": [
+        "vendor"
+      ],
+      "sourceFiles": [
+        "vendor/zstd/zstd.c"
+      ],
+      "extraCopyPaths": [
+        "./native_zstd.hpp",
+        "vendor/zstd/LICENSE",
+        "vendor/zstd.h",
+        "vendor/zstd_errors.h"
+      ]
+    }
+  },
+  "dependencies": {}
+}

@@ -2,8 +2,7 @@
 
 Zstandard compression utilities for byte arrays and byte streams.
 
-This module vendors the upstream Meta Zstandard library as an amalgamated
-`vendor/zstd/zstd.c` source file generated from Zstandard v1.5.7.
+Doof automatically acquires the pinned upstream Meta Zstandard v1.5.7 source archive into `vendor/zstd` during build/test.
 
 ## Usage
 

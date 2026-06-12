@@ -2,19 +2,54 @@
   "name": "std/zstd",
   "version": "0.1.0",
   "license": "ISC",
+  "externalDependencies": {
+    "zstd": {
+      "kind": "archive",
+      "url": "https://github.com/facebook/zstd/releases/download/v1.5.7/zstd-1.5.7.tar.gz",
+      "sha256": "eb33e51f49a15e023950cd7825ca74a4a2b43db8354825ac24fc1b7ee09e6fa3",
+      "stripComponents": 1,
+      "destination": "vendor/zstd"
+    }
+  },
   "build": {
     "native": {
       "includePaths": [
-        "vendor"
+        "vendor/zstd/lib",
+        "vendor/zstd/lib/common"
       ],
       "sourceFiles": [
-        "vendor/zstd/zstd.c"
+        "vendor/zstd/lib/common/debug.c",
+        "vendor/zstd/lib/common/entropy_common.c",
+        "vendor/zstd/lib/common/error_private.c",
+        "vendor/zstd/lib/common/fse_decompress.c",
+        "vendor/zstd/lib/common/pool.c",
+        "vendor/zstd/lib/common/threading.c",
+        "vendor/zstd/lib/common/xxhash.c",
+        "vendor/zstd/lib/common/zstd_common.c",
+        "vendor/zstd/lib/compress/fse_compress.c",
+        "vendor/zstd/lib/compress/hist.c",
+        "vendor/zstd/lib/compress/huf_compress.c",
+        "vendor/zstd/lib/compress/zstd_compress.c",
+        "vendor/zstd/lib/compress/zstd_compress_literals.c",
+        "vendor/zstd/lib/compress/zstd_compress_sequences.c",
+        "vendor/zstd/lib/compress/zstd_compress_superblock.c",
+        "vendor/zstd/lib/compress/zstd_double_fast.c",
+        "vendor/zstd/lib/compress/zstd_fast.c",
+        "vendor/zstd/lib/compress/zstd_lazy.c",
+        "vendor/zstd/lib/compress/zstd_ldm.c",
+        "vendor/zstd/lib/compress/zstd_opt.c",
+        "vendor/zstd/lib/compress/zstd_preSplit.c",
+        "vendor/zstd/lib/compress/zstdmt_compress.c",
+        "vendor/zstd/lib/decompress/huf_decompress.c",
+        "vendor/zstd/lib/decompress/zstd_ddict.c",
+        "vendor/zstd/lib/decompress/zstd_decompress.c",
+        "vendor/zstd/lib/decompress/zstd_decompress_block.c"
       ],
       "extraCopyPaths": [
         "./native_zstd.hpp",
         "vendor/zstd/LICENSE",
-        "vendor/zstd.h",
-        "vendor/zstd_errors.h"
+        "vendor/zstd/lib/zstd.h",
+        "vendor/zstd/lib/zstd_errors.h"
       ]
     }
   },

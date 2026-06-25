@@ -4,6 +4,11 @@ Zstandard compression utilities for byte arrays and byte streams.
 
 Doof automatically acquires the pinned upstream Meta Zstandard v1.5.7 source archive into `vendor/zstd` during build/test.
 
+## Documentation
+
+- [Guide and API reference](docs/API.md) covers one-shot compression, compression levels, streaming compression, and failure behavior.
+- Tests can be run with `doof test zstd`.
+
 ## Usage
 
 ```doof

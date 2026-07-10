@@ -62,13 +62,11 @@ public:
         const std::shared_ptr<std::vector<uint8_t>>& data
     ) {
         if (finished_) {
-            return doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string>::failure(
-                "zstd encoder update after finish"
-            );
+            return doof::Failure<std::string>{"zstd encoder update after finish"};
         }
 
         if (!data || data->empty()) {
-            return doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string>::success(detail::emptyBytes());
+            return doof::Success<std::shared_ptr<std::vector<uint8_t>>>{detail::emptyBytes()};
         }
 
         ZSTD_inBuffer input { data->data(), data->size(), 0u };
@@ -77,7 +75,7 @@ public:
 
     doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string> finish() {
         if (finished_) {
-            return doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string>::success(detail::emptyBytes());
+            return doof::Success<std::shared_ptr<std::vector<uint8_t>>>{detail::emptyBytes()};
         }
 
         finished_ = true;
@@ -110,19 +108,17 @@ private:
             ZSTD_outBuffer out { buffer.data(), buffer.size(), 0u };
             const size_t remaining = ZSTD_compressStream2(context_, &out, &input, directive);
             if (ZSTD_isError(remaining)) {
-                return doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string>::failure(
-                    detail::zstdError(operation, remaining)
-                );
+                return doof::Failure<std::string>{detail::zstdError(operation, remaining)};
             }
 
             output->insert(output->end(), buffer.begin(), buffer.begin() + static_cast<std::ptrdiff_t>(out.pos));
 
             if (directive == ZSTD_e_continue) {
                 if (input.pos == input.size) {
-                    return doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string>::success(output);
+                    return doof::Success<std::shared_ptr<std::vector<uint8_t>>>{output};
                 }
             } else if (remaining == 0u) {
-                return doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string>::success(output);
+                return doof::Success<std::shared_ptr<std::vector<uint8_t>>>{output};
             }
         }
     }
@@ -147,13 +143,11 @@ inline doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string> compress
         detail::normalizeLevel(level)
     );
     if (ZSTD_isError(written)) {
-        return doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string>::failure(
-            detail::zstdError("compress", written)
-        );
+        return doof::Failure<std::string>{detail::zstdError("compress", written)};
     }
 
     output->resize(written);
-    return doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string>::success(output);
+    return doof::Success<std::shared_ptr<std::vector<uint8_t>>>{output};
 }
 
 inline doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string> compress(
@@ -167,9 +161,7 @@ inline doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string> decompre
 ) {
     ZSTD_DCtx* rawContext = ZSTD_createDCtx();
     if (rawContext == nullptr) {
-        return doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string>::failure(
-            "zstd failed to allocate decompression context"
-        );
+        return doof::Failure<std::string>{"zstd failed to allocate decompression context"};
     }
     std::unique_ptr<ZSTD_DCtx, decltype(&ZSTD_freeDCtx)> context(rawContext, ZSTD_freeDCtx);
 
@@ -182,21 +174,17 @@ inline doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string> decompre
         ZSTD_outBuffer out { buffer.data(), buffer.size(), 0u };
         remaining = ZSTD_decompressStream(context.get(), &out, &input);
         if (ZSTD_isError(remaining)) {
-            return doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string>::failure(
-                detail::zstdError("decompress", remaining)
-            );
+            return doof::Failure<std::string>{detail::zstdError("decompress", remaining)};
         }
 
         output->insert(output->end(), buffer.begin(), buffer.begin() + static_cast<std::ptrdiff_t>(out.pos));
     }
 
     if (remaining != 0u) {
-        return doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string>::failure(
-            "zstd decompress failed: truncated frame"
-        );
+        return doof::Failure<std::string>{"zstd decompress failed: truncated frame"};
     }
 
-    return doof::Result<std::shared_ptr<std::vector<uint8_t>>, std::string>::success(output);
+    return doof::Success<std::shared_ptr<std::vector<uint8_t>>>{output};
 }
 
 }  // namespace doof_zstd

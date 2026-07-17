@@ -1,12 +1,12 @@
 import class NativeZstdEncoder from "native_zstd.hpp" as doof_zstd::NativeZstdEncoder {
-  static create(level: int): NativeZstdEncoder
-  update(data: readonly byte[]): Result<readonly byte[], string>
-  finish(): Result<readonly byte[], string>
+  isolated static create(level: int): NativeZstdEncoder
+  isolated update(data: readonly byte[]): Result<readonly byte[], string>
+  isolated finish(): Result<readonly byte[], string>
 }
 
-export import function zstdCompress(data: readonly byte[]): Result<readonly byte[], string> from "native_zstd.hpp" as doof_zstd::compress
-export import function zstdCompressWithLevel(data: readonly byte[], level: int): Result<readonly byte[], string> from "native_zstd.hpp" as doof_zstd::compressWithLevel
-export import function zstdDecompress(data: readonly byte[]): Result<readonly byte[], string> from "native_zstd.hpp" as doof_zstd::decompress
+export import isolated function zstdCompress(data: readonly byte[]): Result<readonly byte[], string> from "native_zstd.hpp" as doof_zstd::compress
+export import isolated function zstdCompressWithLevel(data: readonly byte[], level: int): Result<readonly byte[], string> from "native_zstd.hpp" as doof_zstd::compressWithLevel
+export import isolated function zstdDecompress(data: readonly byte[]): Result<readonly byte[], string> from "native_zstd.hpp" as doof_zstd::decompress
 
 export class ZstdCompressStream implements Stream<readonly byte[]> {
   source: Stream<readonly byte[]>

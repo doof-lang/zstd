@@ -18,7 +18,7 @@ class ChunkStream implements Stream<readonly byte[]> {
   value(): readonly byte[] => this.currentValue
 }
 
-function assertBytes(actual: readonly byte[], expected: readonly byte[]): void {
+function assertBytes(actual: readonly byte[], expected: readonly byte[]): none {
   assert(actual.length == expected.length, "expected byte lengths to match")
 
   for index of 0..<actual.length {
@@ -48,7 +48,7 @@ function collect(stream: Stream<readonly byte[]>): readonly byte[] {
   return builder.build()
 }
 
-export function testZstdCompressProducesZstdFrame(): void {
+export function testZstdCompressProducesZstdFrame(): none {
   let compressed: readonly byte[] = []
   case zstdCompress(buildPayload()) {
     s: Success -> {
@@ -66,7 +66,7 @@ export function testZstdCompressProducesZstdFrame(): void {
   assert(compressed[3] == 253, "expected zstd magic byte 4")
 }
 
-export function testZstdRoundTrip(): void {
+export function testZstdRoundTrip(): none {
   input := buildPayload()
   let compressed: readonly byte[] = []
   case zstdCompressWithLevel(input, 5) {
@@ -90,7 +90,7 @@ export function testZstdRoundTrip(): void {
   assertBytes(decompressed, input)
 }
 
-export function testZstdCompressStreamRoundTrip(): void {
+export function testZstdCompressStreamRoundTrip(): none {
   input := buildPayload()
   compressed := collect(ZstdCompressStream(ChunkStream {
     chunks: [
@@ -112,7 +112,7 @@ export function testZstdCompressStreamRoundTrip(): void {
   assertBytes(decompressed, input)
 }
 
-export function testZstdDecompressRejectsInvalidFrame(): void {
+export function testZstdDecompressRejectsInvalidFrame(): none {
   decompressed := zstdDecompress(encodeText("not zstd"))
   case decompressed {
     _: Success -> {

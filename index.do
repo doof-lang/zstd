@@ -15,7 +15,7 @@ export class ZstdCompressStream implements Stream<readonly byte[]> {
   private currentValue: readonly byte[] = []
   private sourceDone: bool = false
   private finished: bool = false
-  private failed: string | null = null
+  private failed: string | none = none
 
   static constructor(source: Stream<readonly byte[]>, level: int = 3): ZstdCompressStream {
     return ZstdCompressStream {
@@ -30,7 +30,7 @@ export class ZstdCompressStream implements Stream<readonly byte[]> {
   }
 
   next(): bool {
-    if this.failed != null {
+    if this.failed != none {
       panic(this.failed!)
     }
 

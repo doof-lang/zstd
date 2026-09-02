@@ -2,7 +2,7 @@
 
 Zstandard compression utilities for byte arrays and byte streams.
 
-Doof automatically acquires the pinned upstream Meta Zstandard v1.5.7 source archive into `vendor/zstd` during build/test.
+The stdlib bundle includes the curated upstream Meta Zstandard v1.5.7 source tree in `vendor/zstd`.
 
 ## Documentation
 

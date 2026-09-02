@@ -5,7 +5,7 @@ for new binary formats and storage where both sides can depend on Zstandard.
 For HTTP interoperability with older clients, `std/gzip` may still be the safer
 choice.
 
-Doof automatically acquires the pinned upstream Meta Zstandard v1.5.7 source
+The stdlib bundle includes the curated upstream Meta Zstandard v1.5.7 source
 archive into `vendor/zstd` during build/test.
 
 ## Quick Start

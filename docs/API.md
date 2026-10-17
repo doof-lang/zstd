@@ -13,8 +13,8 @@ archive into `vendor/zstd` during build/test.
 ```doof
 import { ZstdCompressStream, zstdCompress, zstdDecompress } from "std/zstd"
 
-compressed := try! zstdCompress(bytes)
-original := try! zstdDecompress(compressed)
+compressed := zstdCompress(bytes)!
+original := zstdDecompress(compressed)!
 
 for chunk of ZstdCompressStream(sourceChunks) {
   // write each compressed chunk to a file, socket, or another stream sink

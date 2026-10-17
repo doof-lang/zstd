@@ -14,8 +14,8 @@ The stdlib bundle includes the curated upstream Meta Zstandard v1.5.7 source tre
 ```doof
 import { zstdCompress, zstdDecompress, ZstdCompressStream } from "std/zstd"
 
-compressed := try! zstdCompress(bytes)
-original := try! zstdDecompress(compressed)
+compressed := zstdCompress(bytes)!
+original := zstdDecompress(compressed)!
 
 compressedChunks := ZstdCompressStream(chunks)
 ```

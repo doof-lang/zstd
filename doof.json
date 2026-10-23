@@ -41,6 +41,9 @@
         "vendor/zstd/LICENSE",
         "vendor/zstd/lib/zstd.h",
         "vendor/zstd/lib/zstd_errors.h"
+      ],
+      "defines": [
+        "ZSTD_DISABLE_ASM"
       ]
     }
   },
